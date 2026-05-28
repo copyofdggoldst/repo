@@ -1,23 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My PyScript App</title>
-    <!-- Load PyScript assets -->
-    <link rel="stylesheet" href="https://pyscript.net">
     <script type="module" src="https://pyscript.net"></script>
+    <py-config>
+        packages = ["pygame-ce"]
+    </py-config>
 </head>
 <body>
+    <h3>Click the blue square!</h3>
+    <canvas id="canvas"></canvas>
 
-    <h1>Hello from Python!</h1>
-    
-    <!-- Write your Python code here -->
     <script type="py">
-        import datetime
-        print("Hello, World!")
-        print(f"Current time is: {datetime.datetime.now()}")
-    </script>
+        import pygame
+        import asyncio
+        import random
 
+        async def main():
+            pygame.init()
+            screen = pygame.display.set_canvas("canvas")
+         
+            
+            while True:
+                for event in pygame.event.get():
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+
+                        
+                        if sprite_rect.collidepoint(mouse_pos):
+                            print("Sprite clicked!")
+                            sprite_rect.x = random.randint(0, 250)
+                            sprite_rect.y = random.randint(0, 100)
+
+
+                screen.fill((240, 240, 240)) # Light gray background
+                pygame.draw.rect(screen, (0, 102, 204), sprite_rect) # Draw blue sprite
+                
+                pygame.display.flip()
+                await asyncio.sleep(0) 
+
+        asyncio.run(main())
+    </script>
 </body>
 </html>
