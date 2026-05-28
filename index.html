@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pure Python Clicking Game</title>
     
-    <!-- Stable PyScript core engine files -->
+    <!-- Stable, verified PyScript engine links -->
     <link rel="stylesheet" href="https://pyscript.net" />
     <script type="module" src="https://pyscript.net"></script>
 </head>
@@ -14,61 +14,78 @@
     <h2 id="game-title">Click the blue square!</h2>
     <p id="score-label">Score: <span id="score-text">0</span></p>
 
+    <!-- Structural containers for PyScript to target -->
     <div id="game-area">
-        <div id="sprite" py-click="move_sprite"></div>
+        <div id="sprite"></div>
     </div>
 
-    <!-- 100% Pure Python Script -->
+    <!-- 100% Pure Python Logic -->
     <script type="py">
         import random
-        from pyscript import web
+        from pyscript import web, when
 
-        # Style the main page body
-        web.page.body.style["backgroundColor"] = "#222"
-        web.page.body.style["color"] = "white"
-        web.page.body.style["fontFamily"] = "sans-serif"
-        web.page.body.style["textAlign"] = "center"
-        web.page.body.style["margin"] = "0px"
-        web.page.body.style["padding"] = "20px"
-
-        # Style the gray game arena box (Selecting index 0)
-        game_area = web.page["#game-area"][0]
-        game_area.style["width"] = "400px"
-        game_area.style["height"] = "400px"
-        game_area.style["backgroundColor"] = "#eed"
-        game_area.style["border"] = "2px solid white"
-        game_area.style["margin"] = "20px auto"
-        game_area.style["position"] = "relative"
-        game_area.style["overflow"] = "hidden"
-
-        # Style the interactive target blue square (Selecting index 0)
-        sprite = web.page["#sprite"][0]
-        sprite.style["width"] = "50px"
-        sprite.style["height"] = "50px"
-        sprite.style["backgroundColor"] = "#0066cc"
-        sprite.style["position"] = "absolute"
-        sprite.style["top"] = "175px"
-        sprite.style["left"] = "175px"
-        sprite.style["cursor"] = "pointer"
-        sprite.style["borderRadius"] = "4px"
-        sprite.style["transition"] = "top 0.1s, left 0.1s"
-
+        # Global score tracker
         score = 0
 
+        # Safely select DOM elements
+        body = web.page.body
+        game_area = web.page["#game-area"]
+        sprite = web.page["#sprite"]
+        score_text = web.page["#score-text"]
+
+        # 1. APPLY VISUAL DESIGNS 
+        # Using dictionary format to guarantee the browser renders the CSS safely
+        body.update(style={
+            "background-color": "#222",
+            "color": "white",
+            "font-family": "sans-serif",
+            "text-align": "center",
+            "margin": "0px",
+            "padding": "20px"
+        })
+
+        game_area.update(style={
+            "width": "400px",
+            "height": "400px",
+            "background-color": "#eed",
+            "border": "2px solid white",
+            "margin": "20px auto",
+            "position": "relative",
+            "overflow": "hidden"
+        })
+
+        sprite.update(style={
+            "width": "50px",
+            "height": "50px",
+            "background-color": "#0066cc",
+            "position": "absolute",
+            "top": "175px",
+            "left": "175px",
+            "cursor": "pointer",
+            "border-radius": "4px",
+            "transition": "top 0.1s, left 0.1s"
+        })
+
+
+        # 2. GAME ACTION LOGIC
+        # Idiomatic PyScript event handling via python decorators
+        @when("click", "#sprite")
         def move_sprite(event):
             global score
             
-            # Increment core engine score
+            # Increment and update text
             score += 1
-            web.page["#score-text"][0].html = str(score)
+            score_text.innerHTML = str(score)
             
-            # Compute new boundary coordinates
+            # Random positioning logic 
             new_x = random.randint(0, 350)
             new_y = random.randint(0, 350)
             
-            # Apply updated positions directly to the object style dictionary
-            sprite.style["left"] = f"{new_x}px"
-            sprite.style["top"] = f"{new_y}px"
+            # Reposition the element securely
+            sprite.update(style={
+                "left": f"{new_x}px",
+                "top": f"{new_y}px"
+            })
     </script>
 
 </body>
