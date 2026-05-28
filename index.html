@@ -6,29 +6,8 @@
     <title>Pure Python Clicking Game</title>
     
     <!-- Stable PyScript core engine dependencies -->
-    <link rel="stylesheet" href="https://pyscript.net" />
-    <script type="module" src="https://pyscript.net"></script>
-
-    <!-- Structural CSS Layout Only (No Sprite Styling Here) -->
-    <style>
-        body {
-            background-color: #222;
-            color: white;
-            font-family: sans-serif;
-            text-align: center;
-            margin: 0px;
-            padding: 20px;
-        }
-        #game-area {
-            width: 400px;
-            height: 400px;
-            background-color: #eed;
-            border: 2px solid white;
-            margin: 20px auto;
-            position: relative;
-            overflow: hidden;
-        }
-    </style>
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css" />
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
 </head>
 <body>
 
@@ -36,53 +15,64 @@
     <p id="score-label">Score: <span id="score-text">0</span></p>
 
     <div id="game-area">
-        <!-- The blue square lives inside here, visually constructed by Python -->
         <div id="sprite"></div>
     </div>
 
-    <!-- 100% Pure Python Core & Sprite Setup -->
+    <!-- 100% Pure Python - Visual Layout and Interactive Mechanics -->
     <script type="py">
         import random
         from pyscript import web, when
 
-        # Global score tracker
+        # Target raw elements via explicit PyScript element definitions
+        body = web.page.body
+        game_area = web.page["#game-area"][0]
+        sprite = web.page["#sprite"][0]
+        score_text = web.page["#score-text"][0]
+
+        # 1. VISUAL LAYOUT LAYER (Pure Python dictionary property assignment)
+        body.style["background-color"] = "#222"
+        body.style["color"] = "white"
+        body.style["font-family"] = "sans-serif"
+        body.style["text-align"] = "center"
+        body.style["margin"] = "0px"
+        body.style["padding"] = "20px"
+
+        game_area.style["width"] = "400px"
+        game_area.style["height"] = "400px"
+        game_area.style["background-color"] = "#eed"
+        game_area.style["border"] = "2px solid white"
+        game_area.style["margin"] = "20px auto"
+        game_area.style["position"] = "relative"
+        game_area.style["overflow"] = "hidden"
+
+        sprite.style["width"] = "50px"
+        sprite.style["height"] = "50px"
+        sprite.style["background-color"] = "#0066cc"
+        sprite.style["position"] = "absolute"
+        sprite.style["top"] = "175px"
+        sprite.style["left"] = "175px"
+        sprite.style["cursor"] = "pointer"
+        sprite.style["border-radius"] = "4px"
+        sprite.style["transition"] = "top 0.1s, left 0.1s"
+
+        # 2. INTERNAL MECHANICS ENGINE
         score = 0
 
-        # Grab the elements from the webpage
-        sprite = web.page["#sprite"]
-        score_text = web.page["#score-text"]
-
-        # 1. SPRITE VISUAL DESIGN (Handled entirely by Python)
-        sprite.update(style={
-            "width": "50px",
-            "height": "50px",
-            "background-color": "#0066cc",
-            "position": "absolute",
-            "top": "175px",
-            "left": "175px",
-            "cursor": "pointer",
-            "border-radius": "4px",
-            "transition": "top 0.1s, left 0.1s"
-        })
-
-        # 2. GAME MECHANICS
         @when("click", "#sprite")
         def move_sprite(event):
             global score
             
-            # Increment core game score via Python
+            # Mathematical calculations handled via Python variables
             score += 1
             score_text.innerHTML = str(score)
             
-            # Calculate new coordinates
+            # Coordinate tracking constraints
             new_x = random.randint(0, 350)
             new_y = random.randint(0, 350)
             
-            # Update the sprite's position dictionary
-            sprite.update(style={
-                "left": f"{new_x}px",
-                "top": f"{new_y}px"
-            })
+            # Map updated parameters back to visual DOM layout positions
+            sprite.style["left"] = f"{new_x}px"
+            sprite.style["top"] = f"{new_y}px"
     </script>
 
 </body>
