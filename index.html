@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Load PyScript runtime -->
     <script type="module" src="https://pyscript.net"></script>
     <py-config>
         packages = ["pygame-ce"]
     </py-config>
+    <style>
+        body { background-color: #222; color: white; font-family: sans-serif; text-align: center; }
+        canvas { border: 2px solid white; background: #eed; display: block; margin: 20px auto; }
+    </style>
 </head>
 <body>
-    <h3>Click the blue square!</h3>
-    <canvas id="canvas"></canvas>
+
+    <h2>Click the blue square!</h2>
+    <!-- We explicitly set the width and height here -->
+    <canvas id="canvas" width="400" height="400"></canvas>
 
     <script type="py">
         import pygame
@@ -17,24 +24,30 @@
 
         async def main():
             pygame.init()
+            
+            
             screen = pygame.display.set_canvas("canvas")
-         
+            
+           
+            sprite_rect = pygame.Rect(175, 175, 50, 50)
             
             while True:
                 for event in pygame.event.get():
                     if event.type == pygame.MOUSEBUTTONDOWN:
-
+                        mouse_pos = pygame.mouse.get_pos()
                         
-                        if sprite_rect.collidepoint(mouse_pos):
-                            print("Sprite clicked!")
-                            sprite_rect.x = random.randint(0, 250)
-                            sprite_rect.y = random.randint(0, 100)
+                       
+                        if sprite_rect.collidepoint(mouse_pos)
+                            sprite_rect.x = random.randint(10, 340)
+                            sprite_rect.y = random.randint(10, 340)
 
-
-                screen.fill((240, 240, 240)) # Light gray background
-                pygame.draw.rect(screen, (0, 102, 204), sprite_rect) # Draw blue sprite
+               
+                screen.fill((220, 220, 220)) 
+                
+                pygame.draw.rect(screen, (0, 102, 204), sprite_rect) 
                 
                 pygame.display.flip()
+                
                 await asyncio.sleep(0) 
 
         asyncio.run(main())
