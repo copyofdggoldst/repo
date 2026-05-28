@@ -3,72 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clicking Game</title>
-    <style>
-        body { 
-            background-color: #222; 
-            color: white; 
-            font-family: sans-serif; 
-            text-align: center; 
-            margin: 0;
-            padding: 20px;
-        }
-        /* The container boundary box */
-        #game-area {
-            width: 400px;
-            height: 400px;
-            background-color: #eed; /* Light gray/beige arena */
-            border: 2px solid white;
-            margin: 20px auto;
-            position: relative; /* Allows sprite placement inside */
-            overflow: hidden;
-        }
-        /* Your bright blue square sprite */
-        #sprite {
-            width: 50px;
-            height: 50px;
-            background-color: #0066cc;
-            position: absolute;
-            top: 175px; /* Center top */
-            left: 175px; /* Center left */
-            cursor: pointer;
-            border-radius: 4px;
-            transition: top 0.1s, left 0.1s; /* Smooth motion */
-        }
-    </style>
+    <title>Pure Python Clicking Game</title>
+    
+    <!-- Mandatory engine components required to process Python in the browser -->
+    <link rel="stylesheet" href="https://pyscript.net" />
+    <script type="module" src="https://pyscript.net"></script>
 </head>
 <body>
 
-    <h2>Click the blue square!</h2>
-    <p>Score: <span id="score-text">0</span></p>
-    
-    <!-- The arena container -->
+    <!-- Basic structural bones; all visuals are handled below by Python -->
+    <h2 id="game-title">Click the blue square!</h2>
+    <p id="score-label">Score: <span id="score-text">0</span></p>
+
     <div id="game-area">
-        <!-- The interactive target sprite -->
-        <div id="sprite"></div>
+        <div id="sprite" py-click="move_sprite"></div>
     </div>
 
-    <script>
-        // Track the game metrics
-        let score = 0;
-        const sprite = document.getElementById("sprite");
-        const scoreText = document.getElementById("score-text");
+    <!-- The complete design and logic written 100% in Python -->
+    <script type="py">
+        import random
+        from pyscript import web
 
-        // Execute logic whenever the user clicks the sprite
-        sprite.addEventListener("click", function() {
-            // 1. Increment total score
-            score++;
-            scoreText.textContent = score;
+        # 1. VISUAL DESIGN SECTION (Python applying styles directly)
+        # Style the main page body
+        web.page.body.style["backgroundColor"] = "#222"
+        web.page.body.style["color"] = "white"
+        web.page.body.style["fontFamily"] = "sans-serif"
+        web.page.body.style["textAlign"] = "center"
+        web.page.body.style["margin"] = "0px"
+        web.page.body.style["padding"] = "20px"
+
+        # Style the gray game arena box
+        game_area = web.page["#game-area"]
+        game_area.style["width"] = "400px"
+        game_area.style["height"] = "400px"
+        game_area.style["backgroundColor"] = "#eed"
+        game_area.style["border"] = "2px solid white"
+        game_area.style["margin"] = "20px auto"
+        game_area.style["position"] = "relative"
+        game_area.style["overflow"] = "hidden"
+
+        # Style the interactive target blue square
+        sprite = web.page["#sprite"]
+        sprite.style["width"] = "50px"
+        sprite.style["height"] = "50px"
+        sprite.style["backgroundColor"] = "#0066cc"
+        sprite.style["position"] = "absolute"
+        sprite.style["top"] = "175px"
+        sprite.style["left"] = "175px"
+        sprite.style["cursor"] = "pointer"
+        sprite.style["borderRadius"] = "4px"
+        sprite.style["transition"] = "top 0.1s, left 0.1s"
+
+
+        # 2. GAME LOGIC SECTION (Action engine)
+        score = 0
+
+        def move_sprite(event):
+            global score
             
-            // 2. Teleport square to a new safe coordinate within the 400x400 box
-            // Maximum position is 350 so a 50px square doesn't clip out of bounds
-            const newX = Math.floor(Math.random() * 350);
-            const newY = Math.floor(Math.random() * 350);
+            # Increment and update the score string
+            score += 1
+            web.page["#score-text"].html = str(score)
             
-            // 3. Apply the new positions
-            sprite.style.left = newX + "px";
-            sprite.style.top = newY + "px";
-        });
+            # Compute new coordinates within the 400x400 boundary box
+            new_x = random.randint(0, 350)
+            new_y = random.randint(0, 350)
+            
+            # Teleport the sprite element using Python style updates
+            sprite.style["left"] = f"{new_x}px"
+            sprite.style["top"] = f"{new_y}px"
     </script>
+
 </body>
 </html>
+
