@@ -5,33 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pure Python Clicking Game</title>
     
-    <!-- Stable PyScript core engine dependencies -->
+    <!-- Verified stable engine components -->
     <link rel="stylesheet" href="https://pyscript.net" />
     <script type="module" src="https://pyscript.net"></script>
 </head>
 <body>
 
-    <h2 id="game-title">Click the blue square!</h2>
+    <h2 id="game-title">Click t!</h2>
     <p id="score-label">Score: <span id="score-text">0</span></p>
 
-    <!-- Bare HTML boxes. Python completely shapes and styles them below -->
+    <!-- Structural bones; Python completely creates, shapes, and handles the designs below -->
     <div id="game-area">
         <div id="sprite"></div>
     </div>
 
-    <!-- 100% Pure Python Core Graphics & Game Mechanics -->
+    <!-- 100% Pure Python Engine -->
     <script type="py">
         import random
-        from pyscript import document
+        from js import document, window
 
-        # 1. GRAPHICS & VISUAL DESIGN LAYER (Pure Python)
-        # Select components using native Python document wrappers
+        # 1. CORE GRAPHICS & VISUAL LAYER
+        # Fetch element references directly via JavaScript context mapping
         body = document.body
         game_area = document.getElementById("game-area")
         sprite = document.getElementById("sprite")
         score_text = document.getElementById("score-text")
 
-        # Style the main browser body window
+        # Style the main webpage canvas view
         body.style.backgroundColor = "#222"
         body.style.color = "white"
         body.style.fontFamily = "sans-serif"
@@ -39,7 +39,7 @@
         body.style.margin = "0px"
         body.style.padding = "20px"
 
-        # Style the arena playground box
+        # Style the gray arena bounding container
         game_area.style.width = "400px"
         game_area.style.height = "400px"
         game_area.style.backgroundColor = "#eed"
@@ -48,7 +48,7 @@
         game_area.style.position = "relative"
         game_area.style.overflow = "hidden"
 
-        # Style the blue target square sprite
+        # Style the interactive targets (the blue square sprite)
         sprite.style.width = "50px"
         sprite.style.height = "50px"
         sprite.style.backgroundColor = "#0066cc"
@@ -60,25 +60,25 @@
         sprite.style.transition = "top 0.1s, left 0.1s"
 
 
-        # 2. INTERNAL MECHANICS ENGINE (Pure Python)
+        # 2. INTERNAL MECHANICS ENGINE 
         score = 0
 
         def move_sprite(event):
             global score
             
-            # Math and string operations handled by Python
+            # Mechanical score increments managed by Python syntax
             score += 1
             score_text.innerText = str(score)
             
-            # Select random map boundary integer locations
+            # Boundary calculations
             new_x = random.randint(0, 350)
             new_y = random.randint(0, 350)
             
-            # Re-render new screen properties
+            # Map calculated integers safely to layout coordinates
             sprite.style.left = f"{new_x}px"
             sprite.style.top = f"{new_y}px"
 
-        # Bind the click action dynamically through Python rules
+        # Route interaction triggers via direct Python property assignment
         sprite.onclick = move_sprite
     </script>
 
