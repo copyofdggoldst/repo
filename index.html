@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pure Python Clicking Game</title>
     
-    <!-- Mandatory engine components required to process Python in the browser -->
+    <!-- Stable PyScript core engine files -->
     <link rel="stylesheet" href="https://pyscript.net" />
     <script type="module" src="https://pyscript.net"></script>
 </head>
 <body>
 
-    <!-- Basic structural bones; all visuals are handled below by Python -->
     <h2 id="game-title">Click the blue square!</h2>
     <p id="score-label">Score: <span id="score-text">0</span></p>
 
@@ -19,12 +18,11 @@
         <div id="sprite" py-click="move_sprite"></div>
     </div>
 
-    <!-- The complete design and logic written 100% in Python -->
+    <!-- 100% Pure Python Script -->
     <script type="py">
         import random
         from pyscript import web
 
-        # 1. VISUAL DESIGN SECTION (Python applying styles directly)
         # Style the main page body
         web.page.body.style["backgroundColor"] = "#222"
         web.page.body.style["color"] = "white"
@@ -33,8 +31,8 @@
         web.page.body.style["margin"] = "0px"
         web.page.body.style["padding"] = "20px"
 
-        # Style the gray game arena box
-        game_area = web.page["#game-area"]
+        # Style the gray game arena box (Selecting index 0)
+        game_area = web.page["#game-area"][0]
         game_area.style["width"] = "400px"
         game_area.style["height"] = "400px"
         game_area.style["backgroundColor"] = "#eed"
@@ -43,8 +41,8 @@
         game_area.style["position"] = "relative"
         game_area.style["overflow"] = "hidden"
 
-        # Style the interactive target blue square
-        sprite = web.page["#sprite"]
+        # Style the interactive target blue square (Selecting index 0)
+        sprite = web.page["#sprite"][0]
         sprite.style["width"] = "50px"
         sprite.style["height"] = "50px"
         sprite.style["backgroundColor"] = "#0066cc"
@@ -55,26 +53,23 @@
         sprite.style["borderRadius"] = "4px"
         sprite.style["transition"] = "top 0.1s, left 0.1s"
 
-
-        # 2. GAME LOGIC SECTION (Action engine)
         score = 0
 
         def move_sprite(event):
             global score
             
-            # Increment and update the score string
+            # Increment core engine score
             score += 1
-            web.page["#score-text"].html = str(score)
+            web.page["#score-text"][0].html = str(score)
             
-            # Compute new coordinates within the 400x400 boundary box
+            # Compute new boundary coordinates
             new_x = random.randint(0, 350)
             new_y = random.randint(0, 350)
             
-            # Teleport the sprite element using Python style updates
+            # Apply updated positions directly to the object style dictionary
             sprite.style["left"] = f"{new_x}px"
             sprite.style["top"] = f"{new_y}px"
     </script>
 
 </body>
 </html>
-
