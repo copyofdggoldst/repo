@@ -1,56 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <!-- Load PyScript runtime -->
-    <script type="module" src="https://pyscript.net"></script>
-    <py-config>
-        packages = ["pygame-ce"]
-    </py-config>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicking Game</title>
     <style>
-        body { background-color: #222; color: white; font-family: sans-serif; text-align: center; }
-        canvas { border: 2px solid white; background: #eed; display: block; margin: 20px auto; }
+        body { 
+            background-color: #222; 
+            color: white; 
+            font-family: sans-serif; 
+            text-align: center; 
+            margin: 0;
+            padding: 20px;
+        }
+        /* The container boundary box */
+        #game-area {
+            width: 400px;
+            height: 400px;
+            background-color: #eed; /* Light gray/beige arena */
+            border: 2px solid white;
+            margin: 20px auto;
+            position: relative; /* Allows sprite placement inside */
+            overflow: hidden;
+        }
+        /* Your bright blue square sprite */
+        #sprite {
+            width: 50px;
+            height: 50px;
+            background-color: #0066cc;
+            position: absolute;
+            top: 175px; /* Center top */
+            left: 175px; /* Center left */
+            cursor: pointer;
+            border-radius: 4px;
+            transition: top 0.1s, left 0.1s; /* Smooth motion */
+        }
     </style>
 </head>
 <body>
 
     <h2>Click the blue square!</h2>
-    <!-- We explicitly set the width and height here -->
-    <canvas id="canvas" width="400" height="400"></canvas>
+    <p>Score: <span id="score-text">0</span></p>
+    
+    <!-- The arena container -->
+    <div id="game-area">
+        <!-- The interactive target sprite -->
+        <div id="sprite"></div>
+    </div>
 
-    <script type="py">
-        import pygame
-        import asyncio
-        import random
+    <script>
+        // Track the game metrics
+        let score = 0;
+        const sprite = document.getElementById("sprite");
+        const scoreText = document.getElementById("score-text");
 
-        async def main():
-            pygame.init()
+        // Execute logic whenever the user clicks the sprite
+        sprite.addEventListener("click", function() {
+            // 1. Increment total score
+            score++;
+            scoreText.textContent = score;
             
+            // 2. Teleport square to a new safe coordinate within the 400x400 box
+            // Maximum position is 350 so a 50px square doesn't clip out of bounds
+            const newX = Math.floor(Math.random() * 350);
+            const newY = Math.floor(Math.random() * 350);
             
-            screen = pygame.display.set_canvas("canvas")
-            
-           
-            sprite_rect = pygame.Rect(175, 175, 50, 50)
-            
-            while True:
-                for event in pygame.event.get():
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        mouse_pos = pygame.mouse.get_pos()
-                        
-                       
-                        if sprite_rect.collidepoint(mouse_pos)
-                            sprite_rect.x = random.randint(10, 340)
-                            sprite_rect.y = random.randint(10, 340)
-
-               
-                screen.fill((220, 220, 220)) 
-                
-                pygame.draw.rect(screen, (0, 102, 204), sprite_rect) 
-                
-                pygame.display.flip()
-                
-                await asyncio.sleep(0) 
-
-        asyncio.run(main())
+            // 3. Apply the new positions
+            sprite.style.left = newX + "px";
+            sprite.style.top = newY + "px";
+        });
     </script>
 </body>
 </html>
